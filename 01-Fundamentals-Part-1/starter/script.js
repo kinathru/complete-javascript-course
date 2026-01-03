@@ -1,5 +1,5 @@
 let js = "amazing";
-if (js === "amazing") {
+if (js === "amazing2") {
     alert("Javascript is fun!");
 }
 
