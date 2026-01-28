@@ -74,3 +74,34 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+/*
+for (const [i, mov] of movements.entries()) {
+  if (mov > 0) {
+    console.log(`Movement ${i} : You deposited ${mov}`);
+  } else {
+    console.log(`Movement ${i} : You withdrewed ${Math.abs(mov)}`);
+  }
+}
+
+console.log('-'.repeat(50));
+
+movements.forEach(function (mov, i, arr) {
+  if (mov > 0) {
+    console.log(`Movement ${i} : You deposited ${mov}`);
+  } else {
+    console.log(`Movement ${i} : You withdrewed ${Math.abs(mov)}`);
+  }
+});
+*/
+
+/*
+currencies.forEach(function (value, key, map) {
+  console.log(`${key}: ${value}`);
+});
+*/
+
+// const uniqueCurrencies = new Set(['LKR', 'USD', 'USD', 'GBP', 'GBP', 'EUR']);
+// uniqueCurrencies.forEach(function (value, key, set) {
+//   console.log(`${key}: ${value}`);
+// });
