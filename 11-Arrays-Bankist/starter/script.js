@@ -77,6 +77,12 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, val) => acc + val, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+calcDisplayBalance(account1.movements);
+
 const createUserNames = function (accs) {
   accs.forEach(function (acc) {
     acc.userName = acc.owner
@@ -187,6 +193,7 @@ const movDescriptions = movements.map((mov, i) => {
 console.log(movDescriptions);
 */
 
+/*
 const deposits = movements.filter(function (mov) {
   return mov > 0;
 });
@@ -200,3 +207,13 @@ for (const mov of movements) {
   }
 }
 console.log(depositsFor);
+*/
+
+/*
+// Accumulator is like a snowball
+const totalBalance = movements.reduce(function (accumulator, curr, i, arr) {
+  console.log(`Iteration ${i}: ${accumulator}`);
+  return accumulator + curr;
+}, 0);
+console.log(totalBalance);
+*/
