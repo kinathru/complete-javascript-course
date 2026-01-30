@@ -77,14 +77,18 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-const computerUserName = function (userName) {
-  return userName
-    .toLowerCase()
-    .split(' ')
-    .map(v => v.at(0))
-    .join('');
+const createUserNames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.userName = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(v => v.at(0))
+      .join('');
+  });
 };
-console.log(computerUserName('Steven Thomas Williams'));
+
+createUserNames(accounts);
+console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -182,3 +186,17 @@ const movDescriptions = movements.map((mov, i) => {
 });
 console.log(movDescriptions);
 */
+
+const deposits = movements.filter(function (mov) {
+  return mov > 0;
+});
+console.log(movements);
+console.log(deposits);
+
+const depositsFor = [];
+for (const mov of movements) {
+  if (mov > 0) {
+    depositsFor.push(mov);
+  }
+}
+console.log(depositsFor);
