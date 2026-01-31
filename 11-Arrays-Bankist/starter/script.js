@@ -138,18 +138,16 @@ btnLogin.addEventListener('click', function (e) {
   );
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    console.log('LOGIN');
+    // Display UI and a Welcome Message
+    labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity = 100;
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    updateUI(currentAccount);
   }
-
-  // Display UI and a Welcome Message
-  labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`;
-  containerApp.style.opacity = 100;
-
-  // Clear input fields
-  inputLoginUsername.value = inputLoginPin.value = '';
-  inputLoginPin.blur();
-
-  updateUI(currentAccount);
 });
 
 btnTransfer.addEventListener('click', function (e) {
@@ -172,6 +170,39 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    updateUI(currentAccount);
+  }
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.userName &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.userName === currentAccount.userName,
+    );
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (
+    amount > 0 &&
+    currentAccount.movements.some(mov => mov >= amount * 0.01)
+  ) {
+    currentAccount.movements.push(amount);
     updateUI(currentAccount);
   }
 });
@@ -353,3 +384,27 @@ console.log(firstWithdrawal);
 const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 console.log(account);
 */
+
+// findLast and findLastIndex
+console.log(movements);
+const lastWithdrawal = movements.findLast(mov => mov < 0);
+console.log(lastWithdrawal);
+
+const latestLargeMovement = movements.findLastIndex(
+  mov => Math.abs(mov) > 1000,
+);
+console.log(
+  `Your latest large movement was ${latestLargeMovement} movements ago`,
+);
+
+console.log(
+  `Has there been at least 1 deposit ? ${movements.some(mov => mov > 0)}`,
+);
+
+console.log(
+  `Has there been at least 1 deposit > 5000 ? ${movements.some(mov => mov > 5000)}`,
+);
+
+console.log(
+  `Are all movements 'deposits' ? ${movements.every(mov => mov > 0)}`,
+);
