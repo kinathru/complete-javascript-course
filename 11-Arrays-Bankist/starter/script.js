@@ -10,6 +10,7 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+  type: 'premium',
 };
 
 const account2 = {
@@ -17,6 +18,7 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+  type: 'premium',
 };
 
 const account3 = {
@@ -24,6 +26,7 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  type: 'standard',
 };
 
 const account4 = {
@@ -31,9 +34,26 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  type: 'standard',
 };
 
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+  owner: 'John Cena',
+  movements: [430],
+  interestRate: 1,
+  pin: 5555,
+  type: 'basic',
+};
+
+const account6 = {
+  owner: 'Ray Mysterio',
+  movements: [],
+  interestRate: 1,
+  pin: 6666,
+  type: 'basic',
+};
+
+const accounts = [account1, account2, account3, account4, account5, account6];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -577,4 +597,42 @@ console.log(movements);
 
 movements.sort((a, b) => (a > b ? -1 : 1)); // Descending order
 console.log(movements);
+*/
+
+/*
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const groupedMovements = Object.groupBy(movements, movement =>
+  movement > 0 ? 'deposits' : 'withdrawals',
+);
+console.log(groupedMovements);
+
+const inventory = [
+  { name: 'asparagus', type: 'vegetables', quantity: 9 },
+  { name: 'bananas', type: 'fruit', quantity: 5 },
+  { name: 'goat', type: 'meat', quantity: 23 },
+  { name: 'cherries', type: 'fruit', quantity: 12 },
+  { name: 'fish', type: 'meat', quantity: 22 },
+];
+
+const result = Object.groupBy(inventory, ({ quantity }) =>
+  quantity < 6 ? 'restock' : 'sufficient',
+);
+console.log(result);
+// [{ name: "bananas", type: "fruit", quantity: 5 }]
+
+const groupByActivity = Object.groupBy(accounts, account => {
+  const movementCount = account.movements.length;
+
+  if (movementCount >= 8) return 'very active';
+  if (movementCount >= 4) return 'active';
+  if (movementCount >= 1) return 'moderate';
+  return 'inactive';
+});
+console.log(groupByActivity);
+
+const groupByType1 = Object.groupBy(accounts, acc => acc.type);
+console.log(groupByType1);
+
+const groupByType2 = Object.groupBy(accounts, ({ type }) => type);
+console.log(groupByType2);
 */
