@@ -62,9 +62,12 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Web Application
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
         <div class="movements__row">
@@ -207,6 +210,13 @@ btnLoan.addEventListener('click', function (e) {
   }
 });
 
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -217,7 +227,7 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -461,6 +471,7 @@ BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT
 TEST DATA:
 */
 
+/*
 const breeds = [
   {
     breed: 'German Shepherd',
@@ -547,3 +558,23 @@ console.log(
     .filter(b => b.activities.includes('fetch'))
     .reduce((acc, b) => Math.max(acc, b.averageWeight), 0),
 );
+
+*/
+
+// Sorting
+
+/*
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owners.sort());
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements.sort());
+
+// return < 0 => A, B
+// return > 0 => B, A
+movements.sort((a, b) => (a > b ? 1 : -1)); // Ascending order
+console.log(movements);
+
+movements.sort((a, b) => (a > b ? -1 : 1)); // Descending order
+console.log(movements);
+*/
