@@ -749,7 +749,7 @@ const dogs = [
 
 // 1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion (recFood) and add it to the object as a new property. Do NOT create a new array, simply loop over the array (We never did this before, so think about how you can do this without creating a new array).
 dogs.forEach(function (dog) {
-  const recFood = Math.round(dog.weight ** 0.75 * 28);
+  const recFood = Math.floor(dog.weight ** 0.75 * 28);
   dog['recFood'] = recFood;
   dog['eatingTooMuch'] = recFood > dog.curFood;
 });
