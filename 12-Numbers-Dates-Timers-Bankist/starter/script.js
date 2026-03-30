@@ -81,19 +81,29 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const date = new Date(acc.movementsDates[i]);
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth()}`.padStart(2, 0);
+    const year = date.getFullYear();
+
+    const displayDate = `${day}/${month}/${year}`;
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
           i + 1
         } ${type}</div>
+        <div class="movements__date">${displayDate}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +152,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -154,6 +164,11 @@ const updateUI = function (acc) {
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
+
+// FAKE ALWAYS LOGGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -170,6 +185,15 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+
+    // Create current date and to,e
+    const now = new Date();
+    const day = `${now.getDate()}`.padStart(2, 0);
+    const month = `${now.getMonth()}`.padStart(2, 0);
+    const year = now.getFullYear();
+    const hour = `${now.getHours()}`.padStart(2, 0);
+    const min = `${now.getMinutes()}`.padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -198,6 +222,10 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    // Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -211,6 +239,9 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+
+    // Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -244,7 +275,7 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -302,6 +333,7 @@ console.log(Math.min(5, 18, 3, 22, 11, 4)); // 3
 console.log(Math.PI * Number.parseFloat('10px') ** 2);
 */
 
+/*
 const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 console.log(randomInt(0, 3));
@@ -325,3 +357,65 @@ console.log((2.7).toFixed(0));
 console.log((2.7).toFixed(3));
 console.log((2.345).toFixed(2));
 console.log(typeof (2.345).toFixed(2));
+*/
+
+/*
+// Remainder/Mod operator %
+console.log(5 % 2);
+console.log(8 % 2);
+
+const isEven = number => number % 2 === 0;
+console.log(isEven(15));
+*/
+
+/*
+// ES 2021 Feature
+const diameter = 287_460_000_000;
+console.log(diameter); // 287460000000
+
+const price = 345_99;
+console.log(price); // 34599
+
+const transferFee = 1_500;
+console.log(transferFee); // 1500
+
+// const PI_1 = 3_.1415; // ❌ This invalid
+// const PI_2 = 3._1415; // ❌ This invalid
+const PI = 3.14_15;
+console.log(PI);
+
+console.log(Number('230_000')); // NaN ❌ This doesn't work
+*/
+
+// Creating Dates
+/*
+const now = new Date();
+console.log(now);
+
+console.log(new Date('Aug 02 2020 18:05:41'));
+console.log(new Date('December 24, 2015')); // ⚠️ Using custom strings like this could be unreliable
+console.log(new Date('2019-11-01T13:15:33.035Z')); // Z stands for UTC time
+
+console.log(new Date(2037, 10, 19, 15, 23, 5)); // ⚠️ Note that the month in JS is 0-based
+console.log(new Date(2037, 10, 33)); // ⚠️ Note that Nov 33rd means December 03rd. 😲
+
+console.log(new Date(0)); // 0 ms after 1970 UTC
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); // 3 days after 1970/01/01
+*/
+
+// Working with Dates
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future); // Thu Nov 19 2037 15:23:00 GMT-0600 (Central Standard Time)
+console.log(future.getFullYear()); // 2037
+console.log(future.getMonth()); // 10
+console.log(future.getDate()); // 19
+console.log(future.getDay()); // 4
+console.log(future.getMonth()); // 10
+console.log(future.getHours()); // 15
+console.log(future.getMinutes()); // 23
+console.log(future.getSeconds()); // 0
+console.log(future.toISOString()); // '2037-11-19T21:23:00.000Z'
+console.log(future.getTime()); // ms passsed after 1970
+
+future.setFullYear(2040);
+console.log(future);
