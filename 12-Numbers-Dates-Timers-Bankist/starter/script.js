@@ -21,9 +21,9 @@ const account1 = {
     '2020-01-28T09:15:04.904Z',
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2026-03-29T17:01:17.194Z',
+    '2026-03-30T23:36:17.929Z',
+    '2026-03-31T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -81,22 +81,38 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const formatMovementDate = function (date) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
+
+  const daysPassed = calcDaysPassed(new Date(), date);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  const day = `${date.getDate()}`.padStart(2, 0);
+  const month = `${date.getMonth()}`.padStart(2, 0);
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort
-    ? acc.movements.slice().sort((a, b) => a - b)
-    : acc.movements;
+  const combinedMovsDates = acc.movements.map((mov, i) => {
+    return { movement: mov, movementDate: acc.movementsDates.at(i) };
+  });
+  console.log(combinedMovsDates);
 
-  movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
+  if (sort) combinedMovsDates.sort((a, b) => a.movement - b.movement);
 
-    const date = new Date(acc.movementsDates[i]);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth()}`.padStart(2, 0);
-    const year = date.getFullYear();
+  combinedMovsDates.forEach(function (obj, i) {
+    const { movement, movementDate } = obj;
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
 
-    const displayDate = `${day}/${month}/${year}`;
+    const displayDate = formatMovementDate(new Date(movementDate));
 
     const html = `
       <div class="movements__row">
@@ -104,7 +120,7 @@ const displayMovements = function (acc, sort = false) {
           i + 1
         } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${movement.toFixed(2)}€</div>
       </div>
     `;
 
@@ -404,6 +420,7 @@ console.log(new Date(3 * 24 * 60 * 60 * 1000)); // 3 days after 1970/01/01
 */
 
 // Working with Dates
+/*
 const future = new Date(2037, 10, 19, 15, 23);
 console.log(future); // Thu Nov 19 2037 15:23:00 GMT-0600 (Central Standard Time)
 console.log(future.getFullYear()); // 2037
@@ -419,3 +436,13 @@ console.log(future.getTime()); // ms passsed after 1970
 
 future.setFullYear(2040);
 console.log(future);
+*/
+
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(+future);
+
+const calcDaysPassed = (date1, date2) =>
+  Math.abs((date2 - date1) / (1000 * 60 * 60 * 24));
+
+const days1 = calcDaysPassed(new Date(2037, 3, 4), new Date(2037, 3, 14));
+console.log(days1);
